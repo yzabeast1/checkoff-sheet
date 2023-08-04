@@ -1,3 +1,5 @@
+int hoverColor=200;
+int nonHoverColor=255;
 class checkCell {
   boolean value=false;
   int x, y, w, h;
@@ -8,7 +10,8 @@ class checkCell {
     this.h=h;
   }
   void draw() {
-    fill(value?color(0, 255, 0):color(255, 0, 0));
+    if (!mouseOverRow())fill(value?color(0, nonHoverColor, 0):color(nonHoverColor, 0, 0));
+    else fill(value?color(0, hoverColor, 0):color(hoverColor, 0, 0));
     rect(x, y, w, h);
   }
   void mousePressed() {
@@ -23,6 +26,9 @@ class checkCell {
       value=!value;
     }
   }
+  boolean mouseOverRow() {
+    return mouseY>y&&mouseY<y+h;
+  }
 }
 class textCell {
   boolean value=false;
@@ -36,12 +42,15 @@ class textCell {
     this.text=text;
   }
   void draw() {
-    fill(255);
+    fill(mouseOverRow()?color(hoverColor):color(nonHoverColor));
     rect(x, y, w, h);
     fill(0);
     textAlign(CENTER, CENTER);
     textSize(h);
     text(text, x+w/2, y+h/3);
+  }
+  boolean mouseOverRow() {
+    return mouseY>y&&mouseY<y+h;
   }
 }
 class numberCell {
@@ -54,7 +63,8 @@ class numberCell {
     this.h=h;
   }
   void draw() {
-    fill(boolean(value)?color(0, 255, 0):color(255, 0, 0));
+    if (!mouseOverRow())fill(boolean(value)?color(0, nonHoverColor, 0):color(nonHoverColor, 0, 0));
+    else fill(boolean(value)?color(0, hoverColor, 0):color(hoverColor, 0, 0));
     rect(x, y, w, h);
     fill(0);
     textAlign(CENTER, CENTER);
@@ -76,13 +86,7 @@ class numberCell {
       if (value==1)totalUndone--;
     }
   }
+  boolean mouseOverRow() {
+    return mouseY>y&&mouseY<y+h;
+  }
 }
-//class cell {
-//  int x, y, w, h;
-//  cell(int x, int y, int w, int h) {
-//    this.x=x;
-//    this.y=y;
-//    this.w=w;
-//    this.h=h;
-//  }
-//}

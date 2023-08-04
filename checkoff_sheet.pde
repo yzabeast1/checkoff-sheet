@@ -5,22 +5,28 @@ int taskCellSize=3;
 int gridx, gridy;
 checkCell[][] grid;
 String saveLocation = System.getProperty("user.home")+"/library/Application Support/point system/";
-String[] weekdays={"sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"};
+String[] weekdays={"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
 textCell[] days;
 textCell[] taskCells;
 int totalDone=0, totalUndone;
 textCell done;
 int numberTasksCount=1;
 numberCell[][] numberTasks;
-//char[] cellType=new char[0];
+String githubTasksLink="https://raw.githubusercontent.com/yzabeast1/checkoff-sheet/main/point%20system/tasks.txt";
+File tasksFile=new File(saveLocation+"tasks.txt");
 void setup() {
-  tasks=loadStrings(saveLocation+"tasks.txt");
+  if (tasksFile.exists())tasks=loadStrings(tasksFile);
+  else if (loadStrings(githubTasksLink)!=null) {
+    tasks=loadStrings(githubTasksLink);
+    saveStrings(saveLocation+"tasks.txt", tasks);
+    tasksFile=new File(saveLocation+"tasks.txt");
+    tasks=loadStrings(tasksFile);
+  } else {
+    exit();
+  }
   fullScreen();
+  //surface.setResizable(true);
   background(0);
-  //for (int i=0; i<tasks.length; i++) {
-  //  cellType=append(cellType, tasks[i].charAt(0));
-  //  tasks[i]=tasks[i].substring(1);
-  //}
   rows=tasks.length;
   gridx=width/(cols+taskCellSize)*cols;
   gridy=height/(rows+1)*rows;
